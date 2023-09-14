@@ -74,9 +74,3 @@ for(var i = 0; i < li.length; i++) {
 }
 
 
-var items = document.querySelector('h2');
-
-items.style.fontWeight = 'bold';
-items.style.color = 'green';
-
-
