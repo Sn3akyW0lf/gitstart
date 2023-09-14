@@ -31,6 +31,7 @@ console.log(headerTitle);
 // headerTitle.style.borderBottom = 'solid 3px black';
 header.style.borderBottom = 'solid 3px black';
 
+
 var add_items = document.querySelector('h2');
 
 add_items.style.fontWeight = 'bold';
@@ -53,3 +54,9 @@ items[2].style.backgroundColor = 'green';
 for(var i = 0; i < items.length; i++) {
     items[i].style.fontWeight = 'bold';
 }
+
+var items = document.querySelector('h2');
+
+items.style.fontWeight = 'bold';
+items.style.color = 'green';
+
