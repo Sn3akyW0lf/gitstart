@@ -31,7 +31,10 @@
 // headerTitle.style.borderBottom = 'solid 3px black';
 // header.style.borderBottom = 'solid 3px black';
 
+
 // var add_items = document.querySelector('h2');
+
+
 
 // add_items.style.fontWeight = 'bold';
 // add_items.style.color = 'green';
@@ -53,6 +56,7 @@
 // for(var i = 0; i < items.length; i++) {
 //     items[i].style.fontWeight = 'bold';
 // }
+
 
 //Get Element by Tag Name
 
