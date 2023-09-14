@@ -43,7 +43,7 @@ add_items.style.color = 'green';
 var items = document.getElementsByClassName('list-group-item');
 
 console.log(items);
-console.log(items[1]);
+// console.log(items[1]);
 
 // items[0].textContent = 'Hello 0';
 // items[1].textContent = 'Hello 1';
@@ -51,26 +51,44 @@ console.log(items[1]);
 // items[3].textContent = 'Hello 3';
 // items[2].style.backgroundColor = 'green';
 
-for(var i = 0; i < items.length; i++) {
-    items[i].style.fontWeight = 'bold';
-}
+// for(var i = 0; i < items.length; i++) {
+//     items[i].style.fontWeight = 'bold';
+// }
 
 
 //Get Element by Tag Name
 
-var li = document.getElementsByTagName('li');
+// var li = document.getElementsByTagName('li');
 
-console.log(li);
-console.log(li[1]);
+// console.log(li);
+// console.log(li[1]);
 
-li[0].textContent = 'Hello 0';
-li[1].textContent = 'Hello 1';
-li[2].textContent = 'Hello 2';
-li[3].textContent = 'Hello 3';
-// li[2].style.backgroundColor = 'green';
+// li[0].textContent = 'Hello 0';
+// li[1].textContent = 'Hello 1';
+// li[2].textContent = 'Hello 2';
+// li[3].textContent = 'Hello 3';
+// // li[2].style.backgroundColor = 'green';
 
-for(var i = 0; i < li.length; i++) {
-    li[i].style.backgroundColor = '#eee';
+// for(var i = 0; i < li.length; i++) {
+//     li[i].style.backgroundColor = '#eee';
+// }
+
+//Query Selector
+
+// var secItem = document.querySelector('.list-group-item:nth-child(2)');
+// secItem.style.color = 'green';
+
+// var thItem = document.querySelector('.list-group-item:nth-child(3)');
+// thItem.style.display = 'none'; 
+
+//Query Selector All
+
+var list_items = document.querySelectorAll('li');
+list_items[1].style.color = '#00ff00';
+
+var odd = document.querySelectorAll('li:nth-child(odd)');
+
+for (var i = 0; i < odd.length; i++) {
+    odd[i].style.backgroundColor = 'green';
 }
-
 
