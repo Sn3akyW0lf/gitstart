@@ -31,7 +31,32 @@ console.log(headerTitle);
 // headerTitle.style.borderBottom = 'solid 3px black';
 header.style.borderBottom = 'solid 3px black';
 
+
+var add_items = document.querySelector('h2');
+
+add_items.style.fontWeight = 'bold';
+add_items.style.color = 'green';
+
+
+//Get Elements by Class Name
+
+var items = document.getElementsByClassName('list-group-item');
+
+console.log(items);
+console.log(items[1]);
+
+items[0].textContent = 'Hello 0';
+items[1].textContent = 'Hello 1';
+items[2].textContent = 'Hello 2';
+items[3].textContent = 'Hello 3';
+items[2].style.backgroundColor = 'green';
+
+for(var i = 0; i < items.length; i++) {
+    items[i].style.fontWeight = 'bold';
+}
+
 var items = document.querySelector('h2');
 
 items.style.fontWeight = 'bold';
 items.style.color = 'green';
+
