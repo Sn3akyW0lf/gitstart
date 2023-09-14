@@ -31,6 +31,7 @@ console.log(headerTitle);
 // headerTitle.style.borderBottom = 'solid 3px black';
 header.style.borderBottom = 'solid 3px black';
 
+
 var add_items = document.querySelector('h2');
 
 add_items.style.fontWeight = 'bold';
@@ -54,6 +55,7 @@ for(var i = 0; i < items.length; i++) {
     items[i].style.fontWeight = 'bold';
 }
 
+
 //Get Element by Tag Name
 
 var li = document.getElementsByTagName('li');
@@ -70,5 +72,11 @@ li[3].textContent = 'Hello 3';
 for(var i = 0; i < li.length; i++) {
     li[i].style.backgroundColor = '#eee';
 }
+
+
+var items = document.querySelector('h2');
+
+items.style.fontWeight = 'bold';
+items.style.color = 'green';
 
 
