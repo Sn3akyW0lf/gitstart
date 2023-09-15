@@ -95,109 +95,159 @@
 // }
 
 
-// TRAVERSING THE DOC OBJ MODEL
+// // TRAVERSING THE DOC OBJ MODEL
 
-var item_list = document.querySelector('#items');
+// var item_list = document.querySelector('#items');
 
-//parentNode
-console.log(item_list.parentNode);
+// //parentNode
+// console.log(item_list.parentNode);
 
-item_list.parentNode.style.backgroundColor = '#555';
+// item_list.parentNode.style.backgroundColor = '#555';
 
-// console.log(item_list.parentNode.parentNode);
+// // console.log(item_list.parentNode.parentNode);
 
-//parentElement
-console.log(item_list.parentElement);
+// //parentElement
+// console.log(item_list.parentElement);
 
-item_list.parentElement.style.backgroundColor = '#777';
+// item_list.parentElement.style.backgroundColor = '#777';
 
-//childNodes
-// console.log(item_list.childNodes);
+// //childNodes
+// // console.log(item_list.childNodes);
 
-// console.log(item_list.children)
+// // console.log(item_list.children)
 
-console.log(item_list.children[1]);
-item_list.children[1].style.backgroundColor = '#550';
+// console.log(item_list.children[1]);
+// item_list.children[1].style.backgroundColor = '#550';
 
-//firstChild
+// //firstChild
 
-console.log(item_list.firstChild);
+// console.log(item_list.firstChild);
 
-//firstElementChild
+// //firstElementChild
 
-console.log(item_list.firstElementChild);
-// item_list.firstElementChild.textContent = 'Hello 0';
+// console.log(item_list.firstElementChild);
+// // item_list.firstElementChild.textContent = 'Hello 0';
 
-//lastChild
+// //lastChild
 
-console.log(item_list.lastChild);
+// console.log(item_list.lastChild);
 
-//lastElementChild
+// //lastElementChild
 
-console.log(item_list.lastElementChild);
-item_list.lastElementChild.textContent = 'Hello 4';
+// console.log(item_list.lastElementChild);
+// item_list.lastElementChild.textContent = 'Hello 4';
 
-//nextSiblings
+// //nextSiblings
 
-console.log(item_list.nextSibling);
+// console.log(item_list.nextSibling);
 
 //nextElementSibling
 
-console.log(item_list.nextElementSibling);
+// console.log(item_list.nextElementSibling);
 
 
 //previousSibling
 
-console.log(item_list.previousSibling);
+// console.log(item_list.previousSibling);
 
 //previousElementSibling
 
-console.log(item_list.previousElementSibling);
+// console.log(item_list.previousElementSibling);
 
-item_list.previousElementSibling.style.color = '#172590';
+// item_list.previousElementSibling.style.color = '#172590';
 
 //createElement
 
 //create a div
 
-var newDiv = document.createElement('div');
+// var newDiv = document.createElement('div');
 
 //adding new class
-newDiv.className = 'hello';
+// newDiv.className = 'hello';
 
 //adding id
 
 //addAttr
-newDiv.setAttribute('title', 'Im a Div');
+// newDiv.setAttribute('title', 'Im a Div');
 
-console.log(newDiv);
+// console.log(newDiv);
 
 //create text node
 
-var newDivText = document.createTextNode('Hello World !! :)');
+// var newDivText = document.createTextNode('Hello World !! :)');
 
 //add text to div
 
-newDiv.appendChild(newDivText);
+// newDiv.appendChild(newDivText);
 
-var container = document.querySelector('header .container');
-var h1 = document.querySelector('header h1');
+// var container = document.querySelector('header .container');
+// var h1 = document.querySelector('header h1');
 
-newDiv.style.fontSize = '15px';
+// newDiv.style.fontSize = '15px';
 
-container.insertBefore(newDiv, h1);
-
-
-var newDiv2 = document.createElement('div');
-newDiv2.className = 'hello';
-newDiv2.setAttribute('title', 'Im a Div2');
-
-var newDiv2Text = document.createTextNode('Hello World !! :)');
-newDiv2.appendChild(newDiv2Text);
-
-var ul = document.querySelector('ul');
-var li = document.querySelector('li');
+// container.insertBefore(newDiv, h1);
 
 
-ul.insertBefore(newDiv2, li);
+// var newDiv2 = document.createElement('div');
+// newDiv2.className = 'hello';
+// newDiv2.setAttribute('title', 'Im a Div2');
 
+// var newDiv2Text = document.createTextNode('Hello World !! :)');
+// newDiv2.appendChild(newDiv2Text);
+
+// var ul = document.querySelector('ul');
+// var li = document.querySelector('li');
+
+
+// ul.insertBefore(newDiv2, li);
+
+var form = document.getElementById('addForm');
+var itemList = document.getElementById('items');
+
+//Form submit event
+
+form.addEventListener('submit', addItem);
+
+//Delete event
+
+itemList.addEventListener('click', remItem);
+
+function addItem(e) {
+    e.preventDefault();
+
+    //Get Input VAlue
+
+    var newItem = document.getElementById('item').value;
+
+    //Create new li element
+
+    var li = document.createElement('li');
+
+    li.className = 'list-group-item';
+
+    li.appendChild(document.createTextNode(newItem));
+
+    var del = document.createElement('button');
+    var edit = document.createElement('button');
+
+    del.className = 'btn btn-danger btn-sm float-right delete';
+    edit.className = 'btn btn-info btn-sm float-right edit';
+
+    del.appendChild(document.createTextNode('X'));
+    edit.appendChild(document.createTextNode('Edit'));
+
+    li.appendChild(del);
+    li.appendChild(edit);
+    itemList.appendChild(li);
+}
+
+//Remove Item
+
+function remItem(e) {
+    if (e.target.classList.contains('delete')) {
+        if (confirm('Do You Want to Delete this Item?')) {
+            var li = e.target.parentElement;
+            itemList.removeChild(li);
+        }
+    }
+}
