@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+        crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div class="container">
+        <form id="my-form" class="text-bg-dark bg-opacity-50 border border-dark border-size-3 rounded-3 p-5 m-3">
+            <div class="card p-3 m-3">
+                <h2 class="card-header">Add a New User</h2>
+                <div class="card-body">
+                    <span class="card-text">
+                        Adding a new User in the System using their Names and Emails.
+                    </span>
+                    
+                </div>
+            </div>
+            
+            <div>
+                <div id="msg_user"></div>
+                <label for="name" class="form-label">Name</label>
+                <input type="text" id="name" value="" class="form-control text-bg-dark form-control-sm" placeholder="Enter Your Name" />
+                
+            </div>
+            <div>
+                <div id="msg_email"></div>
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" value="" class="form-control text-bg-dark form-control-sm" placeholder="Enter Your Email" />
+            </div>
+                            
+
+
+            
+            <input type="submit" value="REGISTER" class="btn btn-outline-light p-3 m-3" />
+        </form>
+    </div>
+
+    <div class="container">
+
+        <button id="click" class="btn bg-primary">CLick ME!</button>
+        <button id="hover" class="btn bg-secondary">Hover Over ME!</button>
+        <button id="mouse-out" class="btn bg-warning">Mouse Out</button>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+
+</html>
