@@ -203,6 +203,7 @@
 
 var form = document.getElementById('addForm');
 var itemList = document.getElementById('items');
+var filter = document.getElementById('filter');
 
 //Form submit event
 
@@ -212,12 +213,17 @@ form.addEventListener('submit', addItem);
 
 itemList.addEventListener('click', remItem);
 
+//Filter Items function
+
+filter.addEventListener('keyup', filterItems);
+
 function addItem(e) {
     e.preventDefault();
 
     //Get Input VAlue
 
     var newItem = document.getElementById('item').value;
+    var descItem = document.getElementById('desc').value;
 
     //Create new li element
 
@@ -229,6 +235,7 @@ function addItem(e) {
 
     var del = document.createElement('button');
     var edit = document.createElement('button');
+    var para = document.createElement('p');
 
     del.className = 'btn btn-danger btn-sm float-right delete';
     edit.className = 'btn btn-info btn-sm float-right edit';
@@ -236,8 +243,11 @@ function addItem(e) {
     del.appendChild(document.createTextNode('X'));
     edit.appendChild(document.createTextNode('Edit'));
 
+    para.appendChild(document.createTextNode(descItem));
+
     li.appendChild(del);
     li.appendChild(edit);
+    li.appendChild(para)
     itemList.appendChild(li);
 }
 
@@ -250,4 +260,24 @@ function remItem(e) {
             itemList.removeChild(li);
         }
     }
+}
+
+
+//Filter Items
+
+function filterItems(e) {
+    var text = e.target.value.toLowerCase();
+    var items = itemList.getElementsByTagName('li');
+
+    Array.from(items).forEach(function(item) {
+        var itemName = item.firstChild.textContent;
+        var itDesc = item.lastElementChild.textContent;
+        if (itemName.toLowerCase().indexOf(text) != -1) {
+            item.style.display = 'block';
+        } else if (itDesc.toLowerCase().indexOf(text) != -1) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
 }
