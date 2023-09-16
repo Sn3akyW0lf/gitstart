@@ -14,6 +14,7 @@ var emailArr = [];
 myForm.addEventListener('submit', onSubmit);
 
 users.addEventListener('click', remUser);
+users.addEventListener('click', editUser);
 
 function onSubmit(e) {
     e.preventDefault();
@@ -49,13 +50,20 @@ function onSubmit(e) {
         li.appendChild(document.createTextNode(`Name - ${userObj.name}, Email - ${userObj.email}, Phone - ${userObj.phone}`));
 
         var del = document.createElement('button');
+        var edit = document.createElement('button');
         del.className = 'btn btn-danger btn-sm float-right delete';
+        edit.className = 'btn btn-info btn-sm float-right edit';
 
         del.appendChild(document.createTextNode('X'));
+        edit.appendChild(document.createTextNode('Edit'));
 
         li.appendChild(del);
+        li.appendChild(edit);
         users.appendChild(li);
         emailArr.push(userObj.email);
+        name.value = '';
+        email.value = '';
+        phone.value = '';
     }
 
 }
@@ -76,6 +84,24 @@ function remUser(e) {
     }
 }
 
+
+//Editing User Information after Registration
+
+function editUser(e) {
+    if (e.target.classList.contains('edit')) {
+        var li = e.target.parentElement;
+        for (var i = 0; i < emailArr.length; i++) {
+            if (li.firstChild.textContent.indexOf(emailArr[i]) != -1) {
+                user_deserial = JSON.parse(localStorage.getItem(emailArr[i]));
+                name.value = user_deserial.name;
+                email.value = user_deserial.email;
+                phone.value = user_deserial.phone;
+                localStorage.removeItem(emailArr[i]);
+            }
+        }
+        users.removeChild(li);
+    }
+}
 
 // Buttons Events
 
