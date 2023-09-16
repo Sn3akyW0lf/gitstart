@@ -4,9 +4,11 @@
 const myForm = document.querySelector('#my-form');
 const name = document.querySelector('#name');
 const email = document.querySelector('#email');
+const phone = document.querySelector('#phone');
 const msg_user = document.querySelector('#msg_user');
 const msg_email = document.querySelector('#msg_email');
-var counter = 0;
+const msg_phone = document.querySelector('#msg_phone');
+var users = document.getElementById('users');
 
 myForm.addEventListener('submit', onSubmit);
 
@@ -23,16 +25,26 @@ function onSubmit(e) {
         msg_email.style.background = 'beige';  
         msg_email.innerHTML = 'PLease Enter Email!';
         setTimeout(() => msg_email.remove(), 3000);
+    } else if (phone.value === '') {
+        msg_phone.style.color = 'chocolate';
+        msg_phone.style.background = 'beige';  
+        msg_phone.innerHTML = 'PLease Enter Phone!';
+        setTimeout(() => msg_phone.remove(), 3000);
     } else {
-
         var userObj = {
             name: name.value,
-            email: email.value
+            email: email.value,
+            phone: phone.value
         };
 
         var userObj_serial = JSON.stringify(userObj);
-        localStorage.setItem(`user${counter}`, userObj_serial);
-        counter++;
+        localStorage.setItem(email.value, userObj_serial);
+
+        var li = document.createElement('li');
+        li.className = 'list-group-item';
+
+        li.appendChild(document.createTextNode(`Name - ${name.value}, Email - ${email.value}, Phone - ${phone.value}`));
+        users.appendChild(li);
     }
 
 }
