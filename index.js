@@ -9,8 +9,11 @@ const msg_user = document.querySelector('#msg_user');
 const msg_email = document.querySelector('#msg_email');
 const msg_phone = document.querySelector('#msg_phone');
 var users = document.getElementById('users');
+var emailArr = [];
 
 myForm.addEventListener('submit', onSubmit);
+
+users.addEventListener('click', remUser);
 
 function onSubmit(e) {
     e.preventDefault();
@@ -43,27 +46,51 @@ function onSubmit(e) {
         var li = document.createElement('li');
         li.className = 'list-group-item';
 
-        li.appendChild(document.createTextNode(`Name - ${name.value}, Email - ${email.value}, Phone - ${phone.value}`));
+        li.appendChild(document.createTextNode(`Name - ${userObj.name}, Email - ${userObj.email}, Phone - ${userObj.phone}`));
+
+        var del = document.createElement('button');
+        del.className = 'btn btn-danger btn-sm float-right delete';
+
+        del.appendChild(document.createTextNode('X'));
+
+        li.appendChild(del);
         users.appendChild(li);
+        emailArr.push(userObj.email);
     }
 
+}
+
+//Deleting the User Data from UL as well as Local Storage
+
+function remUser(e) {
+    if (e.target.classList.contains('delete')) {
+        if (confirm('Do You Want to Delete This Record?')) {
+            var li = e.target.parentElement;
+            for (var i = 0; i < emailArr.length; i++) {
+                if (li.firstChild.textContent.indexOf(emailArr[i]) != -1) {
+                    localStorage.removeItem(emailArr[i]);
+                }
+            }
+            users.removeChild(li);
+        }
+    }
 }
 
 
 // Buttons Events
 
-const click = document.querySelector('#click');
-const hover = document.querySelector('#hover');
-const mouseOut = document.querySelector('#mouse-out');
+// const click = document.querySelector('#click');
+// const hover = document.querySelector('#hover');
+// const mouseOut = document.querySelector('#mouse-out');
 
-click.addEventListener('click', (e) => {
-    alert('SURPRISE!!');
-});
+// click.addEventListener('click', (e) => {
+//     alert('SURPRISE!!');
+// });
 
-hover.addEventListener('mouseover', (e) => {
-    document.querySelector('body').style.background = '#222';
-});
+// hover.addEventListener('mouseover', (e) => {
+//     document.querySelector('body').style.background = '#222';
+// });
 
-mouseOut.addEventListener('mouseout', (e) => {
-    document.querySelector('body').style.background = "#679324";
-});
+// mouseOut.addEventListener('mouseout', (e) => {
+//     document.querySelector('body').style.background = "#679324";
+// });
