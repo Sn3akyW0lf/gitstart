@@ -24,7 +24,14 @@ function onSubmit(e) {
         msg_email.innerHTML = 'PLease Enter Email!';
         setTimeout(() => msg_email.remove(), 3000);
     } else {
-        localStorage.setItem(`10${counter}`, `Name - ${name.value}, Email - ${email.value}`);
+
+        var userObj = {
+            name: name.value,
+            email: email.value
+        };
+
+        var userObj_serial = JSON.stringify(userObj);
+        localStorage.setItem(`user${counter}`, userObj_serial);
         counter++;
     }
 
