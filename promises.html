@@ -1,0 +1,109 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const posts = [{
+            title: 'POST1',
+            body: 'This is Post 1'
+        }];
+
+        const User = {
+            name: 'Siddhesh',
+            lastActivityTime: new Date().getTime()
+        };
+        //updating the last activity time
+        function updateLastUserActivityTime() {
+            return new Promise((res, rej) => {
+                setTimeout(() => {
+                    User.lastActivityTime = new Date().getTime();
+                    res(User.lastActivityTime);
+                }, 1000)
+            })
+        }
+
+        //output of all posts in the console
+        function getPosts() {
+            setTimeout(() => {
+                let output = '';
+                posts.forEach((post, index) => {
+                    output += `<li>${post.title}</li>`;
+                });
+                document.body.innerHTML = output;
+                console.log(posts);
+                // console.log(output);
+            }, 1000);
+
+        }
+
+        //creating a new post
+
+        function createPost(post) {
+            return new Promise((res, rej) => {
+                setTimeout(() => {
+                    posts.push(post);
+                    res();
+                }, 2000);
+            })
+        }
+
+        //deleting posts
+
+        function deletePost() {
+            return new Promise ((res, rej) => {
+                setTimeout(() => {
+                    if(posts.values !== 0) {
+                        res(posts.pop());
+                    } else {
+                        rej('ERROR - Array is already Empty!!');
+                    }
+                }, 1000);
+            })
+        }
+
+
+        const promise2 = createPost({
+            title: 'POST2',
+            body: 'This is Post 2'
+        });
+        const promise3 = createPost({
+            title: 'POST3',
+            body: 'This is Post 3'
+        });
+        const promise4 = createPost({
+            title: 'POST4',
+            body: 'This is Post 4'
+        });
+
+
+        //accessing everything
+        console.log(`Before Creating More Posts ${User.name} Last Activity Time - ${User.lastActivityTime}`);
+        console.log('After Creating New Posts >>');
+        Promise.all([promise2, promise3, promise4, updateLastUserActivityTime])
+            .then(() => {
+                getPosts(); 
+                updateLastUserActivityTime().then(() => {
+                    console.log(`${User.name} Last Activity Time - ${User.lastActivityTime}`)
+                })
+                deletePost().then(() => {
+                    console.log('Deleting Last Post')
+                    getPosts();
+                    updateLastUserActivityTime().then(() => {
+                    console.log(`${User.name} Last Activity Time - ${User.lastActivityTime}`)
+                    })
+                })
+            })
+
+
+        //  Promise.all(createPost({title: 'POST2'}), createPost({title: 'POST3'}), createPost({title: 'POST4'}))
+        //  .then(getPosts);
+    </script>
+</body>
+
+</html>
