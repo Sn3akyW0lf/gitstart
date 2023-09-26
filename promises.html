@@ -16,13 +16,15 @@
 
         const User = {
             name: 'Siddhesh',
-            lastActivityTime: new Date().getTime()
+            lastActivityTime: new Date('2023-08-25')
         };
         //updating the last activity time
         function updateLastUserActivityTime() {
             return new Promise((res, rej) => {
                 setTimeout(() => {
-                    User.lastActivityTime = new Date().getTime();
+                    let time = new Date().getTime();
+                    let date = new Date(time);
+                    User.lastActivityTime = date.toString();
                     res(User.lastActivityTime);
                 }, 1000)
             })
@@ -83,23 +85,29 @@
 
 
         //accessing everything
-        console.log(`Before Creating More Posts ${User.name} Last Activity Time - ${User.lastActivityTime}`);
-        console.log('After Creating New Posts >>');
-        Promise.all([promise2, promise3, promise4, updateLastUserActivityTime])
-            .then(() => {
-                getPosts(); 
-                updateLastUserActivityTime().then(() => {
-                    console.log(`${User.name} Last Activity Time - ${User.lastActivityTime}`)
-                })
-                deletePost().then(() => {
-                    console.log('Deleting Last Post')
-                    getPosts();
-                    updateLastUserActivityTime().then(() => {
-                    console.log(`${User.name} Last Activity Time - ${User.lastActivityTime}`)
-                    })
-                })
-            })
 
+        const userPosts = async () => {
+            console.log(`Before Creating More Posts ${User.name} Last Activity Time - ${User.lastActivityTime}`);
+            console.log('After Creating New Posts >>');
+            let postCreate = await Promise.all([promise2, promise3, promise4, updateLastUserActivityTime]);
+            getPosts();
+                    
+            let updateActivity1 = await updateLastUserActivityTime();
+            console.log(`${User.name} Last Activity Time - ${User.lastActivityTime}`)
+                    
+            let delPost = await deletePost();
+                        
+            console.log('Deleting Last Post');
+                        
+            getPosts();
+                        
+            let updateActivity2 = await updateLastUserActivityTime();
+            console.log(`${User.name} Last Activity Time - ${User.lastActivityTime}`);
+
+            return postCreate;
+        }
+        
+        userPosts();
 
         //  Promise.all(createPost({title: 'POST2'}), createPost({title: 'POST3'}), createPost({title: 'POST4'}))
         //  .then(getPosts);
