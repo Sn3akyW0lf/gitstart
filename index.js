@@ -21,11 +21,14 @@ users.addEventListener('click', editUser);
 
 window.addEventListener('DOMContentLoaded',() => {
     axios
-        .get('https://crudcrud.com/api/b8ac3d0148304dbaa42272418e765ef2/appointmentData')
+        .get('https://crudcrud.com/api/45598a7c63a44ae284f4045a530a5c89/appointmentData')
         .then(response => {
             response.data.forEach(res => {
                 var li = document.createElement('li');
                 li.className = 'list-group-item';
+                var uid = document.createElement('input');
+                uid.setAttribute("type", "hidden");
+                uid.setAttribute("value", res._id)
 
                 li.appendChild(document.createTextNode(`Name - ${res.name}, Email - ${res.email}, Phone - ${res.phone}`));
 
@@ -37,6 +40,7 @@ window.addEventListener('DOMContentLoaded',() => {
                 del.appendChild(document.createTextNode('X'));
                 edit.appendChild(document.createTextNode('Edit'));
 
+                li.appendChild(uid);
                 li.appendChild(del);
                 li.appendChild(edit);
                 users.appendChild(li);
@@ -49,6 +53,7 @@ window.addEventListener('DOMContentLoaded',() => {
                 };
 
                 userList.push(userObj);
+                // console.log(li.inner);
             })
         })
 })
@@ -84,10 +89,13 @@ function onSubmit(e) {
         // var userObj_serial = JSON.stringify(userObj);
         // localStorage.setItem(email.value, userObj_serial);
         axios
-            .post('https://crudcrud.com/api/b8ac3d0148304dbaa42272418e765ef2/appointmentData', userObj)
+            .post('https://crudcrud.com/api/45598a7c63a44ae284f4045a530a5c89/appointmentData', userObj)
             .then((res) => {
                 var li = document.createElement('li');
                 li.className = 'list-group-item';
+                var uid = document.createElement('input');
+                uid.setAttribute("type", "hidden");
+                uid.setAttribute("value", res._id)
 
                 li.appendChild(document.createTextNode(`Name - ${userObj.name}, Email - ${userObj.email}, Phone - ${userObj.phone}`));
 
@@ -99,6 +107,7 @@ function onSubmit(e) {
                 del.appendChild(document.createTextNode('X'));
                 edit.appendChild(document.createTextNode('Edit'));
 
+                li.appendChild(uid);
                 li.appendChild(del);
                 li.appendChild(edit);
                 users.appendChild(li);
@@ -116,7 +125,7 @@ function onSubmit(e) {
 
 }
 
-//Deleting the User Data from UL as well as Local Storage
+//Deleting the User Data from UL as well as Cloud Storage
 
 function remUser(e) {
     if (e.target.classList.contains('delete')) {
@@ -125,9 +134,10 @@ function remUser(e) {
             for (var i = 0; i < userList.length; i++) {
                 if (li.firstChild.textContent.indexOf(userList[i].email) != -1) {
                     axios
-                        .delete(`https://crudcrud.com/api/b8ac3d0148304dbaa42272418e765ef2/appointmentData/${userList[i].id}`)
+                        .delete(`https://crudcrud.com/api/45598a7c63a44ae284f4045a530a5c89/appointmentData/${userList[i].id}`)
                         .then(res => {
-                            console.log(res);
+                            console.log(res.data);
+                            console.log(li.firstChild.textContent)
                         })
                         .catch(err => console.log(err))
                 }
@@ -143,16 +153,23 @@ function remUser(e) {
 function editUser(e) {
     if (e.target.classList.contains('edit')) {
         var li = e.target.parentElement;
-        for (var i = 0; i < emailArr.length; i++) {
-            if (li.firstChild.textContent.indexOf(emailArr[i]) != -1) {
-                user_deserial = JSON.parse(localStorage.getItem(emailArr[i]));
-                name.value = user_deserial.name;
-                email.value = user_deserial.email;
-                phone.value = user_deserial.phone;
-                localStorage.removeItem(emailArr[i]);
+        for (var i = 0; i < userList.length; i++) {
+            if (li.firstChild.textContent.indexOf(userList[i].email) != -1) {
+                axios
+                    .get(`https://crudcrud.com/api/45598a7c63a44ae284f4045a530a5c89/appointmentData/${userList[i].id}`)
+                    .then(res => {
+                        name.value = res.data.name;
+                        email.value = res.data.email;
+                        phone.value = res.data.phone;
+                        // axios
+                        // .delete(`https://crudcrud.com/api/b8ac3d0148304dbaa42272418e765ef2/appointmentData/${res._id}`)
+                        // .then(res => console.log(res))
+                        // .catch(err => console.log(err))
+                    })
+                    .catch(err => console.log(err))
             }
         }
-        users.removeChild(li);
+        // users.removeChild(li);
     }
 }
 
