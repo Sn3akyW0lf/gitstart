@@ -19,7 +19,7 @@ users.addEventListener('click', editUser);
 
 // Get Pervious User Data present in CrudCrud database on Page Load.
 
-function getUserData() {
+window.addEventListener('DOMContentLoaded',() => {
     axios
         .get('https://crudcrud.com/api/328a7de9a1154ca0a9a3ac5298344f31/appointmentData')
         .then(response => {
@@ -42,7 +42,7 @@ function getUserData() {
                 users.appendChild(li);
             })
         })
-}
+})
 
 // Validate Textfields and if all data is filled, send the data to CrudCrud database, and add a new
 // List Item on the Current Page
@@ -72,7 +72,7 @@ function onSubmit(e) {
             phone: phone.value
         };
 
-        var userObj_serial = JSON.stringify(userObj);
+        // var userObj_serial = JSON.stringify(userObj);
         // localStorage.setItem(email.value, userObj_serial);
         axios
             .post('https://crudcrud.com/api/328a7de9a1154ca0a9a3ac5298344f31/appointmentData', userObj)
