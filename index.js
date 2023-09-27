@@ -16,22 +16,53 @@ myForm.addEventListener('submit', onSubmit);
 users.addEventListener('click', remUser);
 users.addEventListener('click', editUser);
 
+
+// Get Pervious User Data present in CrudCrud database on Page Load.
+
+function getUserData() {
+    axios
+        .get('https://crudcrud.com/api/328a7de9a1154ca0a9a3ac5298344f31/appointmentData')
+        .then(response => {
+            response.data.forEach(res => {
+                var li = document.createElement('li');
+                li.className = 'list-group-item';
+
+                li.appendChild(document.createTextNode(`Name - ${res.name}, Email - ${res.email}, Phone - ${res.phone}`));
+
+                var del = document.createElement('button');
+                var edit = document.createElement('button');
+                del.className = 'btn btn-danger btn-sm float-right delete';
+                edit.className = 'btn btn-info btn-sm float-right edit';
+
+                del.appendChild(document.createTextNode('X'));
+                edit.appendChild(document.createTextNode('Edit'));
+
+                li.appendChild(del);
+                li.appendChild(edit);
+                users.appendChild(li);
+            })
+        })
+}
+
+// Validate Textfields and if all data is filled, send the data to CrudCrud database, and add a new
+// List Item on the Current Page
+
 function onSubmit(e) {
     e.preventDefault();
 
-    if(name.value === ''){
+    if (name.value === '') {
         msg_user.style.color = 'chocolate';
-        msg_user.style.background = 'beige';  
+        msg_user.style.background = 'beige';
         msg_user.innerHTML = 'PLease Enter Name!';
         setTimeout(() => msg_user.remove(), 3000);
     } else if (email.value === '') {
         msg_email.style.color = 'chocolate';
-        msg_email.style.background = 'beige';  
+        msg_email.style.background = 'beige';
         msg_email.innerHTML = 'PLease Enter Email!';
         setTimeout(() => msg_email.remove(), 3000);
     } else if (phone.value === '') {
         msg_phone.style.color = 'chocolate';
-        msg_phone.style.background = 'beige';  
+        msg_phone.style.background = 'beige';
         msg_phone.innerHTML = 'PLease Enter Phone!';
         setTimeout(() => msg_phone.remove(), 3000);
     } else {
@@ -42,28 +73,34 @@ function onSubmit(e) {
         };
 
         var userObj_serial = JSON.stringify(userObj);
-        localStorage.setItem(email.value, userObj_serial);
+        // localStorage.setItem(email.value, userObj_serial);
+        axios
+            .post('https://crudcrud.com/api/328a7de9a1154ca0a9a3ac5298344f31/appointmentData', userObj)
+            .then((res) => {
+                var li = document.createElement('li');
+                li.className = 'list-group-item';
 
-        var li = document.createElement('li');
-        li.className = 'list-group-item';
+                li.appendChild(document.createTextNode(`Name - ${userObj.name}, Email - ${userObj.email}, Phone - ${userObj.phone}`));
 
-        li.appendChild(document.createTextNode(`Name - ${userObj.name}, Email - ${userObj.email}, Phone - ${userObj.phone}`));
+                var del = document.createElement('button');
+                var edit = document.createElement('button');
+                del.className = 'btn btn-danger btn-sm float-right delete';
+                edit.className = 'btn btn-info btn-sm float-right edit';
 
-        var del = document.createElement('button');
-        var edit = document.createElement('button');
-        del.className = 'btn btn-danger btn-sm float-right delete';
-        edit.className = 'btn btn-info btn-sm float-right edit';
+                del.appendChild(document.createTextNode('X'));
+                edit.appendChild(document.createTextNode('Edit'));
 
-        del.appendChild(document.createTextNode('X'));
-        edit.appendChild(document.createTextNode('Edit'));
+                li.appendChild(del);
+                li.appendChild(edit);
+                users.appendChild(li);
+                emailArr.push(userObj.email);
+                name.value = '';
+                email.value = '';
+                phone.value = '';
+                console.log(res.data);
+            })
+            .catch(err => console.log(err))
 
-        li.appendChild(del);
-        li.appendChild(edit);
-        users.appendChild(li);
-        emailArr.push(userObj.email);
-        name.value = '';
-        email.value = '';
-        phone.value = '';
     }
 
 }
