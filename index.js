@@ -9,7 +9,7 @@ const msg_user = document.querySelector('#msg_user');
 const msg_email = document.querySelector('#msg_email');
 const msg_phone = document.querySelector('#msg_phone');
 var users = document.getElementById('users');
-var emailArr = [];
+var userList = [];
 
 myForm.addEventListener('submit', onSubmit);
 
@@ -21,7 +21,7 @@ users.addEventListener('click', editUser);
 
 window.addEventListener('DOMContentLoaded',() => {
     axios
-        .get('https://crudcrud.com/api/328a7de9a1154ca0a9a3ac5298344f31/appointmentData')
+        .get('https://crudcrud.com/api/b8ac3d0148304dbaa42272418e765ef2/appointmentData')
         .then(response => {
             response.data.forEach(res => {
                 var li = document.createElement('li');
@@ -40,6 +40,15 @@ window.addEventListener('DOMContentLoaded',() => {
                 li.appendChild(del);
                 li.appendChild(edit);
                 users.appendChild(li);
+                
+                var userObj = {
+                    name: res.name,
+                    email: res.email,
+                    phone: res.phone,
+                    id: res._id
+                };
+
+                userList.push(userObj);
             })
         })
 })
@@ -75,7 +84,7 @@ function onSubmit(e) {
         // var userObj_serial = JSON.stringify(userObj);
         // localStorage.setItem(email.value, userObj_serial);
         axios
-            .post('https://crudcrud.com/api/328a7de9a1154ca0a9a3ac5298344f31/appointmentData', userObj)
+            .post('https://crudcrud.com/api/b8ac3d0148304dbaa42272418e765ef2/appointmentData', userObj)
             .then((res) => {
                 var li = document.createElement('li');
                 li.className = 'list-group-item';
@@ -93,11 +102,13 @@ function onSubmit(e) {
                 li.appendChild(del);
                 li.appendChild(edit);
                 users.appendChild(li);
-                emailArr.push(userObj.email);
+                userList.push(userObj);
                 name.value = '';
                 email.value = '';
                 phone.value = '';
+                userObj.id = res.data._id;
                 console.log(res.data);
+                console.log(userList)
             })
             .catch(err => console.log(err))
 
@@ -111,9 +122,14 @@ function remUser(e) {
     if (e.target.classList.contains('delete')) {
         if (confirm('Do You Want to Delete This Record?')) {
             var li = e.target.parentElement;
-            for (var i = 0; i < emailArr.length; i++) {
-                if (li.firstChild.textContent.indexOf(emailArr[i]) != -1) {
-                    localStorage.removeItem(emailArr[i]);
+            for (var i = 0; i < userList.length; i++) {
+                if (li.firstChild.textContent.indexOf(userList[i].email) != -1) {
+                    axios
+                        .delete(`https://crudcrud.com/api/b8ac3d0148304dbaa42272418e765ef2/appointmentData/${userList[i].id}`)
+                        .then(res => {
+                            console.log(res);
+                        })
+                        .catch(err => console.log(err))
                 }
             }
             users.removeChild(li);
