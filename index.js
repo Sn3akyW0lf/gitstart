@@ -22,22 +22,24 @@ tblUser.addEventListener('click', editUser);
 
 window.addEventListener('DOMContentLoaded',() => {
     axios
-        .get('https://crudcrud.com/api/8a06929fa473457bb57d4645896aea1b/appointmentData')
+        .get('http://localhost:4000/user/all-users')
         .then(response => {
-            response.data.forEach(res => {
+            // console.log(response.data);
+            response.data.allUserDetails.forEach(res => {
+                // console.log(res);
                 // var li = document.createElement('li');
                 // li.className = 'list-group-item';
-                var uid = document.createElement('input');
+                // var uid = document.createElement('input');
                 var tr = document.createElement('tr');
                 var td1 = document.createElement('td');
                 var td2 = document.createElement('td');
                 var td3 = document.createElement('td');
                 var td4 = document.createElement('td');
                 var td5 = document.createElement('td');
-                uid.setAttribute("type", "hidden");
-                uid.setAttribute("value", res._id);
+                // uid.setAttribute("type", "hidden");
+                // uid.setAttribute("value", res.id);
 
-                td1.appendChild(document.createTextNode(`${res._id}`))
+                td1.appendChild(document.createTextNode(`${res.id}`))
                 td1.className = "d-none";
                 td2.appendChild(document.createTextNode(`${res.name}`))
                 td3.appendChild(document.createTextNode(`${res.email}`))
@@ -53,7 +55,7 @@ window.addEventListener('DOMContentLoaded',() => {
                 del.appendChild(document.createTextNode('X'));
                 edit.appendChild(document.createTextNode('Edit'));
 
-                del.addEventListener('click', function(){ deleteUser(res._id); });
+                del.addEventListener('click', function(){ deleteUser(td1); });
 
                 // li.appendChild(uid);
                 // li.appendChild(del);
@@ -72,12 +74,13 @@ window.addEventListener('DOMContentLoaded',() => {
                     name: res.name,
                     email: res.email,
                     phone: res.phone,
-                    id: res._id
+                    id: res.id
                 };
 
                 userList.push(userObj);
                 // console.log(li.inner);
             })
+            console.log(userList);
         })
 })
 
@@ -112,25 +115,25 @@ function onSubmit(e) {
         // var userObj_serial = JSON.stringify(userObj);
         // localStorage.setItem(email.value, userObj_serial);
         axios
-            .post('https://crudcrud.com/api/8a06929fa473457bb57d4645896aea1b/appointmentData', userObj)
+            .post('http://localhost:4000/user/add-user', userObj)
             .then((res) => {
                 // var li = document.createElement('li');
                 // li.className = 'list-group-item';
-                var uid = document.createElement('input');
+                // var uid = document.createElement('input');
                 var tr = document.createElement('tr');
                 var td1 = document.createElement('td');
                 var td2 = document.createElement('td');
                 var td3 = document.createElement('td');
                 var td4 = document.createElement('td');
                 var td5 = document.createElement('td');
-                uid.setAttribute("type", "hidden");
-                uid.setAttribute("value", res._id);
+                // uid.setAttribute("type", "hidden");
+                // uid.setAttribute("value", res.data.newUserDetail.id);
 
-                td1.appendChild(document.createTextNode(`${res._id}`))
+                td1.appendChild(document.createTextNode(`${res.data.newUserDetail.id}`))
                 td1.className = "d-none";
-                td2.appendChild(document.createTextNode(`${res.name}`))
-                td3.appendChild(document.createTextNode(`${res.email}`))
-                td4.appendChild(document.createTextNode(`${res.phone}`))
+                td2.appendChild(document.createTextNode(`${res.data.newUserDetail.name}`))
+                td3.appendChild(document.createTextNode(`${res.data.newUserDetail.email}`))
+                td4.appendChild(document.createTextNode(`${res.data.newUserDetail.phone}`))
                 
                 // li.appendChild(document.createTextNode(`Name - ${res.name}, Email - ${res.email}, Phone - ${res.phone}`));
 
@@ -142,7 +145,7 @@ function onSubmit(e) {
                 del.appendChild(document.createTextNode('X'));
                 edit.appendChild(document.createTextNode('Edit'));
 
-                del.addEventListener('click', function(){ deleteUser(res._id); });
+                del.addEventListener('click', function(){ deleteUser(td1); });
 
                 // li.appendChild(uid);
                 // li.appendChild(del);
@@ -158,18 +161,18 @@ function onSubmit(e) {
                 tblUser.appendChild(tr);
                 
                 var userObj = {
-                    name: res.name,
-                    email: res.email,
-                    phone: res.phone,
-                    id: res._id
+                    name: res.data.newUserDetail.name,
+                    email: res.data.newUserDetail.email,
+                    phone: res.data.newUserDetail.phone,
+                    id: res.data.newUserDetail.id
                 };
 
                 userList.push(userObj);
                 name.value = '';
                 email.value = '';
                 phone.value = '';
-                userObj.id = res.data._id;
-                console.log(res.data);
+                userObj.id = res.data.newUserDetail.id;
+                // console.log(res.data.newUserDetail);
                 console.log(userList)
             })
             .catch(err => console.log(err))
@@ -180,30 +183,46 @@ function onSubmit(e) {
 
 //Deleting the User Data from UL as well as Cloud Storage
 function deleteUser(id){
-    if (confirm('Do You Want to Delete This Record?')) {
-        console.log(id);
-        console.log(id.target.parentElement);
-    }
+    console.log(id.innerHTML);
+    let tr = id.parentElement;
+    let tbl = tr.parentElement;
+    let user = userList.find(u => u.id == id.innerHTML);
+
+    // console.log(tr.parentElement);
+
+    // console.log(user);
+    // console.log(userList[(id.innerHTML - 1)]);
+    axios
+        .post('http://localhost:4000/user/delete-user', user)
+        .then(res => {
+            console.log(res);
+            tbl.removeChild(tr);
+        })
+        .catch(err => {
+            console.log(err);
+        })
 }
-function remUser(e) {
-    if (e.target.classList.contains('delete')) {
-        if (confirm('Do You Want to Delete This Record?')) {
-            var li = e.target.parentElement;
-            for (var i = 0; i < userList.length; i++) {
-                if (li.firstChild.textContent.indexOf(userList[i].email) != -1) {
-                    axios
-                        .delete(`https://crudcrud.com/api/8a06929fa473457bb57d4645896aea1b/appointmentData/${userList[i].id}`)
-                        .then(res => {
-                            console.log(res.data);
-                            console.log(li.firstChild.textContent)
-                        })
-                        .catch(err => console.log(err))
-                }
-            }
-            users.removeChild(li);
-        }
-    }
-}
+
+
+// function remUser(e) {
+//     if (e.target.classList.contains('delete')) {
+//         if (confirm('Do You Want to Delete This Record?')) {
+//             var li = e.target.parentElement;
+//             for (var i = 0; i < userList.length; i++) {
+//                 if (li.firstChild.textContent.indexOf(userList[i].email) != -1) {
+//                     axios
+//                         .delete(`https://crudcrud.com/api/72713e8bf3f34c70ad61054ff478c8e9/appointmentData/${userList[i].id}`)
+//                         .then(res => {
+//                             console.log(res.data);
+//                             console.log(li.firstChild.textContent)
+//                         })
+//                         .catch(err => console.log(err))
+//                 }
+//             }
+//             users.removeChild(li);
+//         }
+//     }
+// }
 
 
 //Editing User Information after Registration
@@ -214,7 +233,7 @@ function editUser(e) {
         for (var i = 0; i < userList.length; i++) {
             if (li.firstChild.textContent.indexOf(userList[i].email) != -1) {
                 axios
-                    .get(`https://crudcrud.com/api/8a06929fa473457bb57d4645896aea1b/appointmentData/${userList[i].id}`)
+                    .get(`https://crudcrud.com/api/72713e8bf3f34c70ad61054ff478c8e9/appointmentData/${userList[i].id}`)
                     .then(res => {
                         name.value = res.data.name;
                         email.value = res.data.email;
