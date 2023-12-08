@@ -78,8 +78,8 @@ const preMovie = async () => {
 
     return ticket;
 }
-
-preMovie().then((x) => console.log(`Person3: Husband  Shows ${x}`));
+  
+preMovie().then((x) => console.log(`Person3: Husband Shows ${x}`));
 
 console.log('Person4: Shows Ticket');
 console.log('Person5: Shows Ticket'); 
